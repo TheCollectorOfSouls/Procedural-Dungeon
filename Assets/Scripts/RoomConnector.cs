@@ -4,28 +4,16 @@ using UnityEngine.Events;
 
 public class RoomConnector : MonoBehaviour
 {
-    [SerializeField] private Direction myDirection = default;
     [SerializeField] private CollisionCheck collisionCheck = default;
     
     private RoomsManager RoomsManager => RoomsManager.Instance;
-    public Direction MyDirection => myDirection;
-    
-    public Room MyRoom { get; private set; }
-    public Direction OppositeDirection { get; private set; }
 
-    public enum Direction
-    {
-        Top,
-        Bottom,
-        Left,
-        Right
-    }
+    public Room MyRoom { get; private set; }
 
     #region Events
 
     public UnityEvent onConnectionFailed;
     public UnityEvent onConnectedRoomSpawned;
-
     public UnityEvent onJoinedConnection;
 
     #endregion
@@ -37,8 +25,7 @@ public class RoomConnector : MonoBehaviour
 
         if (CanSpawn())
         {
-            SetOppositeDirection();
-            Spawn();   
+            SpawnRoom();
         }
         else
         {
@@ -54,13 +41,16 @@ public class RoomConnector : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void Spawn()
+    private void SpawnRoom()
     {
-        var roomPref = RoomsManager.GetRandomRoom(OppositeDirection);
+        var roomPref = RoomsManager.GetRandomRoom();
         var roomGo = Instantiate(roomPref);
         roomGo.GetComponent<Room>().SpawnedSetup(transform.position, this, out var success);
-        
-        if(success) onConnectedRoomSpawned?.Invoke();
+
+        if (success)
+        {
+            onConnectedRoomSpawned?.Invoke();
+        }
         else
         {
             onConnectionFailed?.Invoke();
@@ -75,17 +65,5 @@ public class RoomConnector : MonoBehaviour
         if (!RoomsManager.CanSpawnRoom()) return false;
 
         return !collisionCheck.IsColliding();
-    }
-
-    private void SetOppositeDirection()
-    {
-        OppositeDirection = myDirection switch
-        {
-            Direction.Top => Direction.Bottom,
-            Direction.Bottom => Direction.Top,
-            Direction.Left => Direction.Right,
-            Direction.Right => Direction.Left,
-            _ => throw new ArgumentOutOfRangeException()
-        };
     }
 }

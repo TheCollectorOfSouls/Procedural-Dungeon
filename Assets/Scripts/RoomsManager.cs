@@ -88,16 +88,9 @@ public class RoomsManager : MonoBehaviour
         return _spawnedRoomsList.Count < maxRooms;
     }
 
-    public GameObject GetRandomRoom(RoomConnector.Direction direction)
+    public GameObject GetRandomRoom()
     {
-        return direction switch
-        {
-            RoomConnector.Direction.Top => roomsData.topRooms[Random.Range(0, roomsData.topRooms.Count)],
-            RoomConnector.Direction.Bottom => roomsData.bottomRooms[Random.Range(0, roomsData.bottomRooms.Count)],
-            RoomConnector.Direction.Left => roomsData.leftRooms[Random.Range(0, roomsData.leftRooms.Count)],
-            RoomConnector.Direction.Right => roomsData.rightRooms[Random.Range(0, roomsData.rightRooms.Count)],
-            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
-        };
+        return roomsData.rooms[Random.Range(0, roomsData.rooms.Count)];
     }
     
     //small delay to wait every room properly finish spawns

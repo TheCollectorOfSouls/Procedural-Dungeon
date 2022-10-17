@@ -214,7 +214,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -427,6 +427,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 4 way room
       objectReference: {fileID: 0}
+    - target: {fileID: 4764640374271063781, guid: f74c1b35b9984484e96c8329421e44c9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4764640374271063782, guid: f74c1b35b9984484e96c8329421e44c9, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -503,7 +507,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5847300389075170820, guid: ffb525f1b434b04498c202a17a44b369, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5847300389075170820, guid: ffb525f1b434b04498c202a17a44b369, type: 3}
       propertyPath: m_LocalPosition.x
@@ -548,6 +552,14 @@ PrefabInstance:
     - target: {fileID: 5847300389075170841, guid: ffb525f1b434b04498c202a17a44b369, type: 3}
       propertyPath: m_Name
       value: Rooms Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5847300389075170843, guid: ffb525f1b434b04498c202a17a44b369, type: 3}
+      propertyPath: maxRooms
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5847300389075170843, guid: ffb525f1b434b04498c202a17a44b369, type: 3}
+      propertyPath: minRooms
+      value: 88
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffb525f1b434b04498c202a17a44b369, type: 3}

@@ -47,10 +47,10 @@ public class CollisionCheck : MonoBehaviour
 
         foreach (var boxCollider in BoxColliders)
         {
-            var boxColliderTf = boxCollider.transform;
-            var overlapPosition = (boxColliderTf.position - transform.position + boxCollider.center)+position;
+            Transform boxColliderTf = boxCollider.transform;
+            Vector3 overlapPosition = (boxColliderTf.position - transform.position + boxCollider.center)+position;
             
-            var colliders = Physics.OverlapBoxNonAlloc(overlapPosition,
+            int colliders = Physics.OverlapBoxNonAlloc(overlapPosition,
                 Vector3.Scale(boxCollider.size/2, boxColliderTf.lossyScale), hitColliders, 
                 boxColliderTf.rotation, checkLayer, QueryTriggerInteraction.UseGlobal);
 
@@ -64,8 +64,8 @@ public class CollisionCheck : MonoBehaviour
     {
         foreach (var boxCollider in BoxColliders)
         {
-            Gizmos.DrawWireCube(transform.position + boxCollider.center, 
-                Vector3.Scale(boxCollider.size, boxCollider.transform.lossyScale));
+            Gizmos.matrix = transform.localToWorldMatrix;
+            Gizmos.DrawWireCube(Vector3.zero + boxCollider.center, boxCollider.size);
         }
     }
 }

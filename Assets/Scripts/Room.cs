@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Room : MonoBehaviour
 {
@@ -11,8 +12,8 @@ public class Room : MonoBehaviour
     [SerializeField] private List<RoomConnector> alternativeConnectorList = new List<RoomConnector>();
     [SerializeField] private List<CollisionCheck> collisionCheckList = new List<CollisionCheck>();
 
-    private bool _spawnedByRoom = false;
-    private bool _finishedSpawns = false;
+    private bool _spawnedByRoom;
+    private bool _finishedSpawns;
     
     
     private void OnTriggerEnter(Collider other)
@@ -54,7 +55,7 @@ public class Room : MonoBehaviour
             return;
         }
 
-        var connector = alternativeConnectorList[0];
+        var connector = alternativeConnectorList[Random.Range(0, alternativeConnectorList.Count)];
         activeConnectorList.Add(connector);
         alternativeConnectorList.Remove(connector);
         
@@ -65,30 +66,28 @@ public class Room : MonoBehaviour
     {
         _spawnedByRoom = true;
         
-        var tf = transform;
-        var currentPos = tf.position;
-        var direction = otherConnector.MyDirection;
-
         RoomConnector connectorConnected = null;
-
-        foreach (var activeSpawner in activeConnectorList)
-        {
-            if (activeSpawner.MyDirection != otherConnector.OppositeDirection) continue;
-
-            connectorConnected = activeSpawner;
-            activeConnectorList.Remove(activeSpawner);
-            break;
-        }
+        
+        if(activeConnectorList.Count > 0)
+            connectorConnected = activeConnectorList[Random.Range(0, activeConnectorList.Count)];
 
         if (!connectorConnected)
         {
             success = false;
             
-            Debug.LogError($"Room {gameObject.name} spawner {direction} is missing");
+            Debug.LogError($"Room {gameObject.name} active spawner is missing");
             Destroy(gameObject);
             return;
         }
+
+        Transform tf = transform;
         
+        Quaternion rotDiff = otherConnector.transform.rotation * Quaternion.Inverse(connectorConnected.transform.rotation);
+        tf.rotation = rotDiff * tf.rotation;
+        tf.rotation = Quaternion.LookRotation(-tf.forward, tf.up);
+
+
+        Vector3 currentPos = tf.position;
         var newPosition = (currentPos - connectorConnected.transform.position)+position;
 
         if (!CanMoveToPosition(newPosition))
